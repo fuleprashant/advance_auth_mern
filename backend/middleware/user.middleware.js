@@ -1,9 +1,11 @@
 import jwt from "jsonwebtoken";
-import { responde } from "../utils/responde";
+import { responde } from "../utils/responde.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const useMiddleware = (req, res, next) => {
-  const token = req.cookies.token; // get token from the cookie
-  console.log(JWT_SECRET_KEY);
+  const token = req.cookies.jwttoken; // get token from the cookie
+
   if (!token) {
     return responde(res, 400, "Access denied , no token provided");
   }
