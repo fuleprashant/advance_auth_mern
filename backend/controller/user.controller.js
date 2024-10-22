@@ -1,4 +1,5 @@
 import userModel from "../model/user.model.js";
+import { emailProvider } from "../utils/emailProvider.js";
 import { responde } from "../utils/responde.js";
 import bcrypt from "bcrypt";
 
@@ -37,6 +38,8 @@ export const signUp = async (req, res) => {
 
     await newUser.save();
 
+    await emailProvider(newUser.email, verificationOTP);
+
     return responde(res, 200, "User registered succesfully", {
       name: newUser.name,
       email: newUser.email,
@@ -51,7 +54,5 @@ export const Login = (req, res) => {
   //   console.log("the Loginfucntion is clicked");
   try {
     const { email, password } = req.body;
-
-    
   } catch (error) {}
 };
