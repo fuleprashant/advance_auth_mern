@@ -1,13 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
+import db from "./database/db.js";
 
 dotenv.config();
 const app = express();
-// console.log("this is the starting of the project");
 const port = process.env.PORT;
 
+db();
 app.get("/", (req, res) => {
-
   res.send("here our server has been start ");
 });
 
