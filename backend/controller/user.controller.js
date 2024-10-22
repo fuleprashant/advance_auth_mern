@@ -5,9 +5,9 @@ import { responde } from "../utils/responde.js";
 import bcrypt from "bcrypt";
 import validate from "validator";
 
+// sign-up function
 export const signUp = async (req, res) => {
   //   console.log("the sign-up fucntion is clicked");
-
   try {
     const { name, email, password } = req.body;
 
@@ -62,6 +62,7 @@ export const signUp = async (req, res) => {
   }
 };
 
+// otp-verify function
 export const verifyOtp = async (req, res) => {
   try {
     const { verificationOTP } = req.body;
@@ -94,6 +95,7 @@ export const verifyOtp = async (req, res) => {
   }
 };
 
+// login function
 export const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -133,6 +135,7 @@ export const Login = async (req, res) => {
   }
 };
 
+// forgot-paassword function
 export const forgotpassword = async (req, res) => {
   //   console.log("forgot password function is clicked");
 
@@ -169,6 +172,7 @@ export const forgotpassword = async (req, res) => {
   }
 };
 
+// password reset-function
 export const resetPassword = async (req, res) => {
   //   console.log("reset password function is clicked");
   try {
@@ -200,6 +204,7 @@ export const resetPassword = async (req, res) => {
   }
 };
 
+// logout function
 export const logout = (req, res) => {
   //   console.log("You clicked the logout button");
   try {
@@ -208,8 +213,45 @@ export const logout = (req, res) => {
   } catch (error) {
     console.error("Error during logout:", error);
 
-    return res
-      .status(500)
-      .json({ message: "Something went wrong during logout." });
+    return responde(res, 500, "Something went wrong during logout.");
+  }
+};
+
+// get the single user with the token
+
+// export const getSingleUserProfile = async (req, res) => {
+//   try {
+//     const userId = req.params.id;
+
+//     if (!userId) {
+//       return responde(res, 400, "userId is required")
+//     }
+
+//   } catch (error) {}
+// };
+
+export const getSingleUserProfile = async (req, res) => {
+  try {
+    const userId = req.params.id; // Extract user ID from route parameters
+
+    // Validate that the userId is provided
+    if (!userId) {
+      return responde(res, 400, "UserId is required");
+    }
+
+    // Find the user by the given ID in the database
+    const user = await userModel.findById(userId);
+
+    // Check if user exists
+    if (!user) {
+      return responde(res, 404, "User not found");
+    }
+
+    // If user is found, send back user data
+    return responde(res, 200, "User profile fetched successfully", user);
+  } catch (error) {
+    // Handle any other errors
+    console.error("Error fetching user profile:", error);
+    return responde(res, 500, "Something went wrong");
   }
 };
