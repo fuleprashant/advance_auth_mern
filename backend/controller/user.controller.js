@@ -54,6 +54,38 @@ export const signUp = async (req, res) => {
   }
 };
 
+export const verifyOtp = async (req, res) => {
+  try {
+    const { verificationOTP } = req.body;
+    const user = await userModel.findOne({ verificationOTP });
+
+    console.log(user.verificationOTP);
+
+    if (!user) {
+      return responde(res, 400, "Invalid OTP");
+    }
+
+    console.log("OTP expire time", user.OTPExpire);
+    console.log("current time", Date.now());
+
+    if (user.OTPExpire < Date.now()) {
+      return responde(res, 400, "OTP Expired");
+    }
+
+    user.isVerified = true;
+    await user.save();
+
+    return responde(res, 200, "Email verified succesfully", {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      isVerified: true,
+    });
+  } catch (error) {
+    return responde(res, 500, "something went wrong check the API");
+  }
+};
+
 export const Login = (req, res) => {
   //   console.log("the Loginfucntion is clicked");
   try {
