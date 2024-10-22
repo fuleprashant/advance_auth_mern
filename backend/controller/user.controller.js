@@ -94,46 +94,6 @@ export const verifyOtp = async (req, res) => {
   }
 };
 
-// export const Login = async (req, res) => {
-//   //   console.log("the Loginfucntion is clicked");
-//   try {
-//     const { email, password } = req.body;
-
-//     const user = await userModel.findOne({ email });
-
-//     if (!user) {
-//       return responde(res, 400, "Invalid email or the password");
-//     }
-
-//     if (user.isVerified) {
-//       return responde(
-//         res,
-//         400,
-//         "please verify your email before loggin this user is not exist"
-//       );
-//     }
-
-//     const isPasswordValid = await bcrypt.compare(password, user.password);
-//     if (!isPasswordValid) {
-//       return responde(res, 400, "Invalid email or the password");
-//     }
-
-//     // Generate JWT token if login is successful
-//     const token = genarateToken(user);
-//     // Set token in cookies (1 hour expiration)
-//     res.cookie("jwttoken", token, { maxAge: 3600000 });
-
-//     return responde(res, 200, "Login Succesfully", {
-//       id: user._id,
-//       name: user.name,
-//       email: user.email,
-//       token,
-//     });
-//   } catch (error) {
-//     responde(res, 500, "something went wrong plz check the API");
-//   }
-// };
-
 export const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -170,5 +130,72 @@ export const Login = async (req, res) => {
     });
   } catch (error) {
     return responde(res, 500, "Something went wrong, please check the API");
+  }
+};
+
+export const forgotpassword = async (req, res) => {
+  //   console.log("forgot password function is clicked");
+
+  try {
+    const { email } = req.body;
+
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return responde(res, 404, "User not found with this email address");
+    }
+
+    // Generate a new OTP for password reset
+    const resetOTP = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log(resetOTP);
+
+    // Set OTP expiration (10 minutes from now)
+    user.verificationOTP = resetOTP;
+    user.OTPExpire = Date.now() + 10 * 60 * 1000; // OTP expires in 10 minutes;
+    await user.save();
+
+    // send this OTP to the user's email
+    try {
+      await emailProvider(user.email, resetOTP);
+    } catch (emailError) {
+      console.error("Error sending email OTP:", emailError);
+      // If sending email fails, return an error response
+      return responde(res, 500, "Failed to send OTP. Please try againlater.");
+    }
+    // Send success response
+    return responde(res, 200, "OTP sent to your email for passwordreset.");
+  } catch (error) {
+    return responde(res, 500, "Something went wrong.");
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  //   console.log("reset password function is clicked");
+  try {
+    const { verificationOTP, newpassword } = req.body;
+    // console.log(verificationOTP, newpassword);
+
+    // Find user by verification OTP
+    const user = await userModel.findOne({
+      verificationOTP,
+      OTPExpire: { $gt: Date.now() }, // Ensure OTP has not expired
+    });
+
+    // If user is not found or OTP is invalid or expired
+    if (!user) {
+      return responde(res, 400, "Invalid or expired OTP");
+    }
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newpassword, 15);
+    // Update user's password only
+    user.password = hashedPassword;
+    // Save the updated user without validation errors
+    await user.save({ validateModifiedOnly: true });
+
+    // Send success response
+    return responde(res, 200, "Password reset successfully.");
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    return responde(res, 500, "Something went wrong during password reset.");
   }
 };
