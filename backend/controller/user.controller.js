@@ -1,5 +1,6 @@
 import userModel from "../model/user.model.js";
 import { emailProvider } from "../utils/emailProvider.js";
+import { genarateToken } from "../utils/generateToken.js";
 import { responde } from "../utils/responde.js";
 import bcrypt from "bcrypt";
 
@@ -39,6 +40,9 @@ export const signUp = async (req, res) => {
     await newUser.save();
 
     await emailProvider(newUser.email, verificationOTP);
+
+    const token = genarateToken(newUser);
+    res.cookie("jwttoken", token, { maxAge: 3600000 });
 
     return responde(res, 200, "User registered succesfully", {
       name: newUser.name,
