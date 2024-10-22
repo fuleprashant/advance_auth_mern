@@ -199,3 +199,17 @@ export const resetPassword = async (req, res) => {
     return responde(res, 500, "Something went wrong during password reset.");
   }
 };
+
+export const logout = (req, res) => {
+  //   console.log("You clicked the logout button");
+  try {
+    res.clearCookie("jwttoken");
+    return responde(res, 200, "user logout succesfully");
+  } catch (error) {
+    console.error("Error during logout:", error);
+
+    return res
+      .status(500)
+      .json({ message: "Something went wrong during logout." });
+  }
+};

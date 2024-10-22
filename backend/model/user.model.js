@@ -21,11 +21,11 @@ const userSchema = new mongoose.Schema({
   },
   verificationOTP: {
     type: String,
-    required: true,
+    // required: true,
   },
   OTPExpire: {
     type: Date,
-    required: true,
+    // required: true,
   },
   profileImage: {
     type: String,
