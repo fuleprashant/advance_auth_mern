@@ -12,6 +12,7 @@ const App = () => {
         dignissimos cupiditate totam unde suscipit placeat incidunt ipsa
         provident?
       </h1>
+      <div>Click to get the all data </div>
     </div>
   );
 };
