@@ -3,6 +3,7 @@ import { emailProvider } from "../utils/emailProvider.js";
 import { genarateToken } from "../utils/generateToken.js";
 import { responde } from "../utils/responde.js";
 import bcrypt from "bcrypt";
+import validate from "validator";
 
 export const signUp = async (req, res) => {
   //   console.log("the sign-up fucntion is clicked");
@@ -10,8 +11,15 @@ export const signUp = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    const existingUser = await userModel.findOne({ email });
+    if (!validate.isEmail(email) || !email.endsWith("@gmail.com")) {
+      return responde(
+        res,
+        400,
+        "Please enter a valid email end with @gmail.com"
+      );
+    }
 
+    const existingUser = await userModel.findOne({ email });
     if (existingUser) {
       return responde(
         res,
@@ -65,8 +73,8 @@ export const verifyOtp = async (req, res) => {
       return responde(res, 400, "Invalid OTP");
     }
 
-    console.log("OTP expire time", user.OTPExpire);
-    console.log("current time", Date.now());
+    // console.log("OTP expire time", user.OTPExpire);
+    // console.log("current time", Date.now());
 
     if (user.OTPExpire < Date.now()) {
       return responde(res, 400, "OTP Expired");
