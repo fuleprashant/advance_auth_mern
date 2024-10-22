@@ -20,3 +20,5 @@ export const useMiddleware = (req, res, next) => {
     return responde(res, 500, "user is required");
   }
 };
+
+// this is the middleware code
