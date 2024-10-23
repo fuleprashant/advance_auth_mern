@@ -1,7 +1,7 @@
 import React from "react";
 
 const App = () => {
-  return <div>Start frontend and of the advance auth project</div>;
+  return <div>Start frontend project</div>;
 };
 
 export default App;
