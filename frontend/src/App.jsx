@@ -2,7 +2,9 @@ import React from "react";
 
 const App = () => {
   return (
-    <div>here we start the frontend project with react and tailwind css</div>
+    <div className="text-2xl bg-red-500">
+      here we start the frontend project with react and tailwind css
+    </div>
   );
 };
 
