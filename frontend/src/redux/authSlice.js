@@ -6,7 +6,7 @@ const token = cookie.get("jwttoken");
 
 const initialState = {
   user: null,
-  isAuthenticate: !!token, // here it pretend a boolean value like if the token is there then its return boolean value true and if token is not there it return false
+  isAuthenticate: !!token, //here it pretend a boolean value like if the token is there then its return boolean value true and if token is not there it return false
   loading: false,
   isVerified: false,
   error: null,

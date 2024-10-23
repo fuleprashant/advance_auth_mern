@@ -4,8 +4,13 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+
+import { authRequest } from "../../redux/authSlice";
+import { signUpUser } from "../../services/auth.service";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -51,6 +56,18 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
+  // api calling for the signup and signin
+
+  const onSubmit = async (data) => {
+    dispatch(authRequest());
+    if (isSignUp) {
+      const result = await signUpUser(data);
+      console.log("the result is", result);
+    }
+    try {
+    } catch (error) {}
+  };
+
   return (
     <div className="flex min-h-full flex-1 justify-center px-6 py-12 lg:px-8 mt-32">
       <div className="flex flex-col justify-center w-[1254px] px-4 py-10 md:px-0 space-y-6 shadow-lg rounded-l-lg ">
@@ -67,7 +84,7 @@ const Login = () => {
         {/* here we start the react-hook-form */}
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form onSubmit={handleSubmit()} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {isSignUp && (
               <div>
                 <label
