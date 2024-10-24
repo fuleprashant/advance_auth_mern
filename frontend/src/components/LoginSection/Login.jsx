@@ -67,7 +67,7 @@ const Login = () => {
       if (isSignUp) {
         const result = await signUpUser(data);
 
-        if (result.status === "success") {
+        if (result.status === "Success") {
           dispatch(authSuccess(reset.data));
           toast.success(result.message);
           navigate("/verify-otp");
@@ -77,12 +77,12 @@ const Login = () => {
       } else {
         const result = await signInUser(data);
         console.log(result);
-        if (result.status === "success") {
+        if (result.status === "Success") {
           toast.success(result.message);
           navigate("/");
         } else {
           toast.error(
-            result.message ||
+            result.error.message ||
               "Login failed . please check your email and password"
           );
         }
