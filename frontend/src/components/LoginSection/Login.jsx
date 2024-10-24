@@ -66,9 +66,10 @@ const Login = () => {
     try {
       if (isSignUp) {
         const result = await signUpUser(data);
+        console.log("signup fucntion", result);
 
         if (result.status === "Success") {
-          dispatch(authSuccess(reset.data));
+          dispatch(authSuccess(result.data));
           toast.success(result.message);
           navigate("/verify-otp");
         } else {
