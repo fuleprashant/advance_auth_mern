@@ -12,6 +12,7 @@ import Reset_password from "./components/LoginSection/Reset_password";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ProtectedRoutes } from "./utils/ProtectedRoutes";
+import LoginProtected from "./utils/LoginProtected";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -21,7 +22,8 @@ const App = () => {
     },
     {
       path: "/login",
-      element: <Login />,
+      element: <LoginProtected element={<Login />} />, // Protect the Login route
+      // element: <Login />,
     },
     {
       path: "/verify-otp",
