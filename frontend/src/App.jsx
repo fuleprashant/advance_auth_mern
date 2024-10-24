@@ -1,5 +1,9 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useNavigate,
+} from "react-router-dom";
 import Home from "./components/homepage/Home";
 import Login from "./components/LoginSection/Login";
 import Verify_otp from "./components/LoginSection/Verify_otp";
@@ -7,12 +11,13 @@ import Forgot_password from "./components/LoginSection/Forgot_password";
 import Reset_password from "./components/LoginSection/Reset_password";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ProtectedRoutes } from "./utils/ProtectedRoutes";
 
 const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />, // later we apply a protected route here
+      element: <ProtectedRoutes element={<Home />} />,
     },
     {
       path: "/login",
@@ -31,6 +36,7 @@ const App = () => {
       element: <Reset_password />,
     },
   ]);
+
   return (
     <div>
       <div className="text-2xl bg-red-500">
