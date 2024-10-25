@@ -23,7 +23,7 @@ const App = () => {
         },
         {
           path: "login",
-          element: <LoginProtected element={<Login />} />, // Protect the Login route
+          element: <LoginProtected element={<Login />} />,
         },
         {
           path: "verify-otp",

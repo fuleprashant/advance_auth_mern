@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom"; // Assuming you use React Router for navigation
+import { Link, useNavigate } from "react-router-dom"; // Assuming you use React Router for navigation
 import { logoutUser } from "../../services/auth.service";
 import avatar from "../../assets/avatar.png";
 
 const Navbar = () => {
   const [dropdown, setDropdown] = useState(false);
   const { user, isAuthenticate } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setDropdown(!dropdown);
@@ -31,6 +32,7 @@ const Navbar = () => {
       if (result.status === "Success") {
         toast.success(result.message);
       }
+      navigate("/login");
     } catch (error) {
       console.log(error);
       toast.error("Failed to log out. Please try again later");
