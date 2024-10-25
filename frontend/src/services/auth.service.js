@@ -1,18 +1,20 @@
-import { useDispatch } from "react-redux";
 import {
   authFailure,
   authRequest,
   authSuccess,
   verifyOtpSuccess,
 } from "../redux/authSlice";
+import { store } from "../redux/store";
+import axios from "axios";
 import axiosInstance from "./url.service";
-const dispatch = useDispatch();
+const dispatch = store.dispatch;
 
 // signup api calling
 export const signUpUser = async (userData) => {
   dispatch(authRequest);
   try {
     const response = await axiosInstance.post("/user/signup", userData);
+    console.log("the rseponse is", response);
     dispatch(authSuccess(response.data.data));
     return response.data;
   } catch (error) {

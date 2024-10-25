@@ -6,11 +6,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 
-import { authRequest } from "../../redux/authSlice";
-import { signUpUser } from "../../services/auth.service";
+import { authRequest, authSuccess } from "../../redux/authSlice";
+import { signInUser, signUpUser } from "../../services/auth.service";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -60,12 +63,37 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     dispatch(authRequest());
-    if (isSignUp) {
-      const result = await signUpUser(data);
-      console.log("the result is", result);
-    }
     try {
-    } catch (error) {}
+      if (isSignUp) {
+        const result = await signUpUser(data);
+        console.log("signup fucntion", result);
+
+        if (result.status === "Success") {
+          dispatch(authSuccess(result.data));
+          toast.success(result.message);
+          navigate("/verify-otp");
+        } else {
+          toast.error(result.message);
+        }
+      } else {
+        const result = await signInUser(data);
+        console.log(result);
+        if (result.status === "Success") {
+          toast.success(result.message);
+          navigate("/");
+        } else {
+          toast.error(
+            result.error.message ||
+              "Login failed . please check your email and password"
+          );
+        }
+      }
+    } catch (error) {
+      toast.error("An unexpectd error occurred. please try again later");
+      console.error(error);
+    } finally {
+      reset();
+    }
   };
 
   return (
