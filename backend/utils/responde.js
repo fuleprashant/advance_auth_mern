@@ -5,3 +5,4 @@ export const responde = (res, statuscode, message, data) => {
     data,
   });
 };
+  

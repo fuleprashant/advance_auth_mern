@@ -174,15 +174,13 @@ export const forgotpassword = async (req, res) => {
 
 // password reset-function
 export const resetPassword = async (req, res) => {
-  //   console.log("reset password function is clicked");
   try {
-    const { verificationOTP, newpassword } = req.body;
-    // console.log(verificationOTP, newpassword);
+    const { verificationOTP, newPassword } = req.body;
 
     // Find user by verification OTP
     const user = await userModel.findOne({
-      verificationOTP,
-      OTPExpire: { $gt: Date.now() }, // Ensure OTP has not expired
+      verificationOTP: Number(verificationOTP),
+      OTPExpire: { $gt: Date.now() },
     });
 
     // If user is not found or OTP is invalid or expired
@@ -190,14 +188,14 @@ export const resetPassword = async (req, res) => {
       return responde(res, 400, "Invalid or expired OTP");
     }
     // Hash the new password
-    const hashedPassword = await bcrypt.hash(newpassword, 15);
+    const hashedPassword = await bcrypt.hash(newPassword, 15);
     // Update user's password only
     user.password = hashedPassword;
     // Save the updated user without validation errors
     await user.save({ validateModifiedOnly: true });
 
     // Send success response
-    return responde(res, 200, "Password reset successfully.");
+    return responde(res, 200, "Password reset successfully.", user);
   } catch (error) {
     console.error("Error resetting password:", error);
     return responde(res, 500, "Something went wrong during password reset.");
