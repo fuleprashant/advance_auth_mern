@@ -2,6 +2,7 @@ import {
   authFailure,
   authRequest,
   authSuccess,
+  logoutSuccess,
   verifyOtpSuccess,
 } from "../redux/authSlice";
 import { store } from "../redux/store";
@@ -82,11 +83,12 @@ export const resetPassword = async (userData) => {
 export const logoutUser = async () => {
   try {
     const response = await axiosInstance.get("/user/logout");
+    console.log("the logout res", response);
     if (response.status === 200) {
       dispatch(logoutSuccess());
     }
-    return response.data;
+    return response;
   } catch (error) {
-    throw error.response.data;
+    console.log(error);
   }
 };
