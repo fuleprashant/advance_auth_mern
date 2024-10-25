@@ -72,6 +72,7 @@ export const resetPassword = async (userData) => {
   dispatch(authRequest);
   try {
     const response = await axiosInstance.post("/user/reset-password", userData);
+    console.log(response);
     return response.data;
   } catch (error) {
     throw error.response.data;

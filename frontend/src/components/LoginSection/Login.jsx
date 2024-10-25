@@ -183,7 +183,10 @@ const Login = () => {
             </div>
             {!isSignUp && (
               <div className="text-sm flex mt-2">
-                <button className="font-semibold text-indigo-600 hover:text-indigo-400">
+                <button
+                  className="font-semibold text-indigo-600 hover:text-indigo-400"
+                  onClick={() => navigate("/forgot-password")}
+                >
                   Forgot Password
                 </button>
               </div>
