@@ -29,15 +29,20 @@ const Navbar = () => {
     try {
       const result = await logoutUser();
       console.log("the result is", result);
+      localStorage.removeItem("user-info");
       if (result.status === "Success") {
         toast.success(result.message);
       }
+
       navigate("/login");
     } catch (error) {
       console.log(error);
       toast.error("Failed to log out. Please try again later");
     }
   };
+
+  const userData = localStorage.getItem("user-info");
+  const inidvitualUserData = JSON.parse(userData);
 
   return (
     <nav className="bg-gray-800 text-white px-4 py-4 shadow-md">
@@ -63,7 +68,7 @@ const Navbar = () => {
                 className="w-10 h-10 rounded-full border-2 border-white"
               />
               {/* Username */}
-              <span>{user?.name || "Username"}</span>
+              <span>{inidvitualUserData.data.name || "Username"}</span>
               {/* Dropdown Icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
