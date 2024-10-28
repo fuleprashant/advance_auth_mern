@@ -77,7 +77,8 @@ const Login = () => {
         }
       } else {
         const result = await signInUser(data);
-        console.log(result);
+        console.log("the loginfunction  is", result);
+        localStorage.setItem("user-info", JSON.stringify(result));
         if (result.status === "Success") {
           toast.success(result.message);
           navigate("/");

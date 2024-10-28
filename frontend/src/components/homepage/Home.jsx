@@ -5,8 +5,10 @@ import { useSelector } from "react-redux";
 
 const Hero = () => {
   const users = useSelector((state) => state.auth.user);
-  console.log(users?.name);
+  // console.log(users?.name);
   // console.log(user?.email);
+  const userData = localStorage.getItem("user-info");
+  const inidvitualUserData = JSON.parse(userData);
   return (
     <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white h-screen flex items-center">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 h-full">
@@ -14,7 +16,7 @@ const Hero = () => {
         <div className="flex flex-col items-start justify-center p-8">
           <h1 className="text-5xl font-bold mb-4">
             Welcome to Your To-Do App{" "}
-            <p className="mt-3 text-red-800">{users?.name}</p>
+            <p className="mt-3 text-red-800">{inidvitualUserData.data.name}</p>
           </h1>
           <p className="mb-8 text-lg">
             Manage your tasks efficiently and effectively.
