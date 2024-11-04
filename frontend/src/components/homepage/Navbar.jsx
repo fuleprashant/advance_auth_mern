@@ -41,6 +41,9 @@ const Navbar = () => {
     }
   };
 
+  // const userData = localStorage.getItem("user-info");
+  // const inidvitualUserData = JSON.parse(userData);
+
   const userData = localStorage.getItem("user-info");
   const inidvitualUserData = JSON.parse(userData);
 
@@ -68,7 +71,7 @@ const Navbar = () => {
                 className="w-10 h-10 rounded-full border-2 border-white"
               />
               {/* Username */}
-              <span>{inidvitualUserData.data.name || "Username"}</span>
+              <span>{inidvitualUserData?.name || "Username"}</span>
               {/* Dropdown Icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
