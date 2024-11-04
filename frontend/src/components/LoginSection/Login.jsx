@@ -285,8 +285,7 @@ const Login = () => {
   };
 
   const handleGoogleAuth = () => {
-    // Add Google authentication logic here
-    console.log("Google Auth button clicked");
+    window.open("http://localhost:4000/auth/google/callback", "_self");
   };
 
   const onSubmit = async (data) => {
