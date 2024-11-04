@@ -16,7 +16,7 @@ const Hero = () => {
         <div className="flex flex-col items-start justify-center p-8">
           <h1 className="text-5xl font-bold mb-4">
             Welcome to Your To-Do App{" "}
-            <p className="mt-3 text-red-800">{inidvitualUserData.data.name}</p>
+            <p className="mt-3 text-red-800">{inidvitualUserData?.name}</p>
           </h1>
           <p className="mb-8 text-lg">
             Manage your tasks efficiently and effectively.
