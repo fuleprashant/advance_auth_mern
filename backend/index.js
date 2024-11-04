@@ -4,6 +4,9 @@ import db from "./database/db.js";
 import router from "./routes/user.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import session from "express-session";
+import passport from "passport";
+import { Strategy } from "passport-google-oauth2";
 
 dotenv.config();
 const app = express();
@@ -27,6 +30,15 @@ app.use("/user", router);
 app.get("/", (req, res) => {
   res.send("here our server has been start ");
 });
+
+// setup the session
+app.use(
+  session({
+    secret: "utdursyciu34769ufyrvkufdtka",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 app.listen(port, () => {
   console.log(
