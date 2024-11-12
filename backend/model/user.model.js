@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
+  googleId: {
+    type: String,
+    unique: true, // Ensures one user per Google account
+    sparse: true, // Allows this field to be optional for non-Google users
+  },
   OTPExpire: {
     type: Date,
     // required: true,
